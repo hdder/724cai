@@ -12,7 +12,7 @@
       "dest": "/frontend/index_user.html"
     },
     {
-      "src": "/admin",
+      "src": "/hhhan",
       "dest": "/frontend/admin.html"
     },
     {
