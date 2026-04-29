@@ -81,22 +81,22 @@ function autoDetectConfig() {
                 token: '724caixun_admin_2024_k9HxM7qL'
             }
         };
-    } else if (currentHost === '724-cx.vercel.app') {
-        // 3. Vercel前端 - 通过cloudflared隧道访问国内后端
+    } else if (currentHost === '724caixun.cn' || currentHost === 'www.724caixun.cn') {
+        // 3. Vercel前端 - 通过cloudflared隧道访问后端
         return {
             server: {
                 host: currentHost,
                 public_ip: currentHost
             },
             ports: {
-                flask_backend: 5555,
-                websocket_server: 9080,
+                flask_backend: 443,
+                websocket_server: 443,
                 frontend: 443
             },
             urls: {
-                flask_backend: 'https://vertex-palace-ends-emails.trycloudflare.com',
-                websocket_server: 'wss://vertex-palace-ends-emails.trycloudflare.com',
-                frontend: 'https://724-cx.vercel.app'
+                flask_backend: 'https://api.724caixun.cn',
+                websocket_server: 'wss://ws.724caixun.cn',
+                frontend: 'https://724caixun.cn'
             },
             admin: {
                 token: '724caixun_admin_2024_k9HxM7qL'
