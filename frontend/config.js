@@ -95,7 +95,7 @@ function autoDetectConfig() {
             },
             urls: {
                 flask_backend: 'https://api.724caixun.cn',
-                websocket_server: 'wss://ws.724caixun.cn',
+                websocket_server: 'wss://api.724caixun.cn',
                 frontend: 'https://724caixun.cn'
             },
             admin: {
