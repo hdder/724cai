@@ -1,0 +1,40 @@
+{
+  "server": {
+    "host": "0.0.0.0",
+    "public_ip": "111.228.8.17",
+    "domain": "724caixun.com"
+  },
+  "ports": {
+    "flask_backend": 5555,
+    "websocket_server": 9080,
+    "frontend": 8000
+  },
+  "urls": {
+    "flask_backend": "http://111.228.8.17:5555",
+    "websocket_server": "ws://111.228.8.17:9080",
+    "frontend": "http://111.228.8.17:8000",
+    "push_api": "http://111.228.8.17:5555/push/send"
+  },
+  "admin": {
+    "token": "724caixun_admin_2024_k9HxM7qL",
+    "url": "https://111.228.8.17:8000/admin.html"
+  },
+  "websocket": {
+    "flask_to_ws": "http://localhost:9080",
+    "ws_to_flask": "http://localhost:5555"
+  },
+  "ai_provider": "siliconflow",
+  "doubao": {
+    "api_key": "f06edbda-5587-4753-83b3-da9d6bb947e6",
+    "api_url": "https://ark.cn-beijing.volces.com/api/v3/responses",
+    "model": "doubao-seed-2-0-mini-260215",
+    "prompt": "这是一个多模态任务，你需要同时分析图片和文字内容，提取股票相关观点。\n严格执行以下强制规则：\n1. 仅单纯罗列股票名称、无任何文字分析、研报解读、基本面评价的内容，全部判定无效，直接忽略，stock_list返回空数组；\n2. 识别到个股附带财报、研报、业绩解读、公司经营分析、行业评价等有效内容时，必须匹配对应标准观点，绝不允许operate字段为空；\n3. 观点判定标准：\n① 业绩增长、业务优化、产品升级、渠道扩张、机构正向解读、成长逻辑向好 → 操作=看好；\n② 通篇利空、需求下滑、竞争恶化、负面风险主导、经营承压 → 操作=看空；\n③ 观望类话术：再看看、不着急、暂缓操作、持仓不动 → 操作=观望；\n④ 原文明确出现：买入、卖出、加仓、减仓、持有，直接使用原文词汇；\n4. 限定操作词库：买入、卖出、看好、看空、持有、加仓、减仓、观望，不得自定义词汇；\n5. 禁止虚构信息、禁止无依据判定、禁止空白操作字段；\n6. 图片中包含的K线图、财报数据、研报截图等都是重要分析依据，务必结合文字综合判断；\n7. 最终仅输出纯JSON字符串，无解释、无换行、无备注、无多余内容；\n固定输出结构：{\"stock_list\":[{\"stock_name\":\"\",\"stock_code\":\"\",\"operate\":\"\"}]}\n无有效个股+观点内容时，统一返回{\"stock_list\":[]}"
+  },
+  "siliconflow": {
+    "api_key": "sk-fiqqzczihxmditmnxplzovplnjfnvhixtovpfyvhpmmclbog",
+    "api_url": "https://api.siliconflow.cn/v1/chat/completions",
+    "model": "deepseek-ai/DeepSeek-V3",
+    "prompt": "这是一个多模态任务，你需要同时分析图片和文字内容，提取股票相关观点。\n严格执行以下强制规则：\n1. 仅单纯罗列股票名称、无任何文字分析、研报解读、基本面评价的内容，全部判定无效，直接忽略，stock_list返回空数组；\n2. 识别到个股附带财报、研报、业绩解读、公司经营分析、行业评价等有效内容时，必须匹配对应标准观点，绝不允许operate字段为空；\n3. 观点判定标准：\n① 业绩增长、业务优化、产品升级、渠道扩张、机构正向解读、成长逻辑向好 → 操作=看好；\n② 通篇利空、需求下滑、竞争恶化、负面风险主导、经营承压 → 操作=看空；\n③ 观望类话术：再看看、不着急、暂缓操作、持仓不动 → 操作=观望；\n④ 原文明确出现：买入、卖出、加仓、减仓、持有，直接使用原文词汇；\n4. 限定操作词库：买入、卖出、看好、看空、持有、加仓、减仓、观望，不得自定义词汇；\n5. 禁止虚构信息、禁止无依据判定、禁止空白操作字段；\n6. 图片中包含的K线图、财报数据、研报截图等都是重要分析依据，务必结合文字综合判断；\n7. 最终仅输出纯JSON字符串，无解释、无换行、无备注、无多余内容；\n固定输出结构：{\"stock_list\":[{\"stock_name\":\"\",\"stock_code\":\"\",\"operate\":\"\"}]}\n无有效个股+观点内容时，统一返回{\"stock_list\":[]}"
+  },
+  "cloudflare_domain": "724caixun.com"
+}

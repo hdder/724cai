@@ -1,0 +1,30 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "frontend/**/*",
+      "use": "@vercel/static"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/frontend/index_user.html"
+    },
+    {
+      "src": "/admin",
+      "dest": "/frontend/admin.html"
+    },
+    {
+      "src": "/auth",
+      "dest": "/frontend/auth.html"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/frontend/$1"
+    }
+  ],
+  "env": {
+    "BACKEND_URL": "https://vertex-palace-ends-emails.trycloudflare.com"
+  }
+}

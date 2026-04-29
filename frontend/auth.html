@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>登录注册 - 724财讯</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        dark: {
+                            bg: '#0F172A',
+                            surface: '#1E293B',
+                            border: '#334155'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 3px;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Loading spinner */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        /* Toast animation */
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+        .toast-enter {
+            animation: slideIn 0.3s ease-out;
+        }
+        .toast-exit {
+            animation: fadeOut 0.3s ease-out forwards;
+        }
+
+        /* Form focus ring */
+        .form-input {
+            transition: all 0.2s;
+        }
+        .form-input:focus {
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        /* Tab active indicator */
+        .tab-btn.active {
+            color: #3B82F6;
+            border-bottom: 2px solid #3B82F6;
+        }
+        .dark .tab-btn.active {
+            color: #60A5FA;
+            border-bottom: 2px solid #60A5FA;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-dark-bg text-gray-900 dark:text-gray-100 min-h-screen flex items-center justify-center p-4 transition-colors duration-200 relative">
+
+    <!-- Back Button (Fixed at top-left) -->
+    <a href="index_user.html" class="fixed top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 bg-white dark:bg-dark-surface shadow-lg rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-200 group border border-gray-200 dark:border-dark-border">
+        <i class="fas fa-arrow-left text-gray-600 dark:text-gray-300"></i>
+        <span class="text-gray-700 dark:text-gray-200 font-medium">返回首页</span>
+    </a>
+
+    <!-- Main Container -->
+    <div class="w-full max-w-5xl flex flex-col lg:flex-row rounded-3xl shadow-2xl overflow-hidden bg-white dark:bg-dark-surface border border-gray-200 dark:border-dark-border">
+
+        <!-- Left Side - Brand Showcase -->
+        <div class="lg:w-2/5 bg-gradient-to-br from-blue-500 via-indigo-600 to-purple-700 p-10 text-white flex flex-col justify-center relative">
+            <!-- Logo -->
+            <div class="flex items-center gap-3 mb-8">
+                <div class="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center shadow-lg">
+                    <i class="fas fa-bolt text-white text-2xl"></i>
+                </div>
+                <h1 class="text-4xl font-bold">724财讯</h1>
+            </div>
+
+            <!-- Main Message -->
+            <h2 class="text-2xl font-semibold mb-4 leading-relaxed">
+                还在反复刷资讯、怕漏掉关键行情？
+            </h2>
+            <p class="text-xl font-medium mb-8 text-blue-100">
+                财讯 724 —— 您的掌上资讯雷达
+            </p>
+
+            <!-- Features -->
+            <div class="space-y-4 text-blue-50">
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <i class="fas fa-bolt text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-white">更快速</p>
+                        <p class="text-sm text-blue-100">7×24 小时实时预警，重要信息不错过。</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <i class="fas fa-magic text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-white">更简单</p>
+                        <p class="text-sm text-blue-100">拒绝复杂，一键操作，三秒上手。</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <i class="fas fa-shield-alt text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-white">更安全</p>
+                        <p class="text-sm text-blue-100">隐私至上，源账户多重防护。</p>
+                    </div>
+                </div>
+
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <i class="fas fa-heart text-sm"></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-white">更省心</p>
+                        <p class="text-sm text-blue-100">高效聚合行情，一站式浏览更轻松。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side - Forms -->
+        <div class="lg:w-3/5 p-8 lg:p-12">
+            <!-- Tabs -->
+            <div class="flex gap-8 border-b border-gray-200 dark:border-dark-border mb-8">
+                <button class="tab-btn active pb-3 font-medium transition-colors" data-tab="login">
+                    登录
+                </button>
+                <button class="tab-btn pb-3 font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors" data-tab="register">
+                    注册
+                </button>
+                <button class="tab-btn pb-3 font-medium text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors" data-tab="reset">
+                    重置密码
+                </button>
+            </div>
+
+            <!-- Login Form -->
+            <div id="loginForm" class="tab-content">
+                <form class="space-y-5">
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fas fa-envelope mr-2 text-blue-500"></i>邮箱地址
+                        </label>
+                        <input type="email" id="loginEmail" placeholder="请输入邮箱" required autofocus
+                            class="form-input w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-border bg-white dark:bg-dark-surface focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fas fa-lock mr-2 text-blue-500"></i>密码
+                        </label>
+                        <input type="password" id="loginPassword" placeholder="请输入密码" required
+                            class="form-input w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-border bg-white dark:bg-dark-surface focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+
+                    <!-- Remember Me & Forgot Password -->
+                    <div class="flex items-center justify-between text-sm">
+                        <label class="flex items-center gap-2 text-gray-600 dark:text-gray-400 cursor-pointer">
+                            <input type="checkbox" id="rememberMe" class="w-4 h-4 rounded border-gray-300 dark:border-dark-border text-blue-600 focus:ring-2 focus:ring-blue-500">
+                            <span>记住我</span>
+                        </label>
+                        <button type="button" id="forgotPasswordBtn" class="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-medium">
+                            忘记密码？
+                        </button>
+                    </div>
+
+                    <!-- Terms Agreement -->
+                    <div class="space-y-2">
+                        <label class="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400 cursor-pointer">
+                            <input type="checkbox" id="loginAgreeTerms" class="w-4 h-4 mt-0.5 rounded border-gray-300 dark:border-dark-border text-blue-600 focus:ring-2 focus:ring-blue-500">
+                            <span>我已阅读并同意</span>
+                        </label>
+                        <div class="flex gap-2 text-sm pl-6">
+                            <button type="button" onclick="showTermsModal()" class="text-blue-600 dark:text-blue-400 hover:underline">
+                                《用户服务条款》
+                            </button>
+                            <span class="text-gray-400">和</span>
+                            <button type="button" onclick="showPrivacyModal()" class="text-blue-600 dark:text-blue-400 hover:underline">
+                                《隐私政策》
+                            </button>
+                        </div>
+                        <p class="error-msg text-sm text-red-500 hidden" id="loginAgreeError">请阅读并同意服务条款和隐私政策</p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="loginSubmitBtn"
+                        class="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-lg font-medium transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                        <i class="fas fa-sign-in-alt"></i>
+                        <span>登录</span>
+                    </button>
+
+                    <!-- Error Message -->
+                    <div class="error-msg text-sm text-red-500 text-center hidden" id="loginError"></div>
+                </form>
+            </div>
+
+            <!-- Register Form -->
+            <div id="registerForm" class="tab-content hidden">
+                <form class="space-y-5">
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fas fa-envelope mr-2 text-blue-500"></i>邮箱地址
+                        </label>
+                        <input type="email" id="registerEmail" placeholder="请输入邮箱" required
+                            class="form-input w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-border bg-white dark:bg-dark-surface focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <p class="error-msg mt-1.5 text-sm text-red-500 hidden" id="registerEmailError"></p>
+                    </div>
+
+                    <!-- Image Captcha -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fas fa-image mr-2 text-blue-500"></i>图形验证码（点击下方"获取验证码"前需要）
+                        </label>
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <input type="text" id="registerCaptcha" placeholder="请输入图形验证码"
+                                class="form-input flex-1 min-w-[120px] px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-border bg-white dark:bg-dark-surface focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none">
+                            <img id="registerCaptchaImg" src="" alt="验证码"
+                                class="rounded cursor-pointer border border-gray-300 dark:border-dark-border"
+                                style="width: 200px; height: 80px; object-fit: contain;">
+                            <button type="button" id="refreshRegisterCaptchaBtn"
+                                class="px-3 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-all whitespace-nowrap">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        <p class="error-msg mt-1.5 text-sm text-red-500 hidden" id="registerCaptchaError"></p>
+                    </div>
+
+                    <!-- Email Verification Code -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fas fa-envelope mr-2 text-blue-500"></i>邮箱验证码
+                        </label>
+                        <div class="flex gap-2">
+                            <input type="text" id="registerCode" placeholder="请输入验证码" required
+                                class="form-input flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-border bg-white dark:bg-dark-surface focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none">
+                            <button type="button" id="sendRegisterCodeBtn"
+                                class="px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-lg font-medium transition-all whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed">
+                                获取验证码
+                            </button>
+                        </div>
+                        <p class="success-msg mt-1.5 text-sm text-green-600 hidden" id="registerCodeSuccess"></p>
+                        <p class="error-msg mt-1.5 text-sm text-red-500 hidden" id="registerCodeError"></p>
+                    </div>
+
+                    <!-- Nickname -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fas fa-user mr-2 text-blue-500"></i>昵称
+                        </label>
+                        <input type="text" id="registerNickname" placeholder="请输入昵称" required
+                            class="form-input w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-border bg-white dark:bg-dark-surface focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <p class="error-msg mt-1.5 text-sm text-red-500 hidden" id="registerNicknameError"></p>
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fas fa-lock mr-2 text-blue-500"></i>密码
+                        </label>
+                        <input type="password" id="registerPassword" placeholder="请输入密码（至少6位）" required
+                            class="form-input w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-border bg-white dark:bg-dark-surface focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <p class="error-msg mt-1.5 text-sm text-red-500 hidden" id="registerPasswordError"></p>
+                    </div>
+
+                    <!-- Confirm Password -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fas fa-lock mr-2 text-blue-500"></i>确认密码
+                        </label>
+                        <input type="password" id="registerConfirmPassword" placeholder="请再次输入密码" required
+                            class="form-input w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-border bg-white dark:bg-dark-surface focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <p class="error-msg mt-1.5 text-sm text-red-500 hidden" id="registerConfirmPasswordError"></p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="registerSubmitBtn"
+                        class="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-lg font-medium transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                        <i class="fas fa-user-plus"></i>
+                        <span>注册</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Reset Password Form -->
+            <div id="resetForm" class="tab-content hidden">
+                <form class="space-y-5">
+                    <!-- Email -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fas fa-envelope mr-2 text-blue-500"></i>邮箱地址
+                        </label>
+                        <input type="email" id="resetEmail" placeholder="请输入邮箱" required
+                            class="form-input w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-border bg-white dark:bg-dark-surface focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <p class="error-msg mt-1.5 text-sm text-red-500 hidden" id="resetEmailError"></p>
+                    </div>
+
+                    <!-- Image Captcha -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fas fa-image mr-2 text-blue-500"></i>图形验证码（点击下方"获取验证码"前需要）
+                        </label>
+                        <div class="flex gap-2 items-center flex-wrap">
+                            <input type="text" id="resetCaptcha" placeholder="请输入图形验证码"
+                                class="form-input flex-1 min-w-[120px] px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-border bg-white dark:bg-dark-surface focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none">
+                            <img id="resetCaptchaImg" src="" alt="验证码"
+                                class="rounded cursor-pointer border border-gray-300 dark:border-dark-border"
+                                style="width: 200px; height: 80px; object-fit: contain;">
+                            <button type="button" id="refreshResetCaptchaBtn"
+                                class="px-3 py-3 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-lg font-medium transition-all whitespace-nowrap">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        <p class="error-msg mt-1.5 text-sm text-red-500 hidden" id="resetCaptchaError"></p>
+                    </div>
+
+                    <!-- Email Verification Code -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fas fa-envelope mr-2 text-blue-500"></i>邮箱验证码
+                        </label>
+                        <div class="flex gap-2">
+                            <input type="text" id="resetCode" placeholder="请输入验证码" required
+                                class="form-input flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-border bg-white dark:bg-dark-surface focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none">
+                            <button type="button" id="sendResetCodeBtn"
+                                class="px-4 py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-lg font-medium transition-all whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed">
+                                获取验证码
+                            </button>
+                        </div>
+                        <p class="success-msg mt-1.5 text-sm text-green-600 hidden" id="resetCodeSuccess"></p>
+                        <p class="error-msg mt-1.5 text-sm text-red-500 hidden" id="resetCodeError"></p>
+                    </div>
+
+                    <!-- New Password -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fas fa-lock mr-2 text-blue-500"></i>新密码
+                        </label>
+                        <input type="password" id="resetPassword" placeholder="请输入新密码（至少6位）" required
+                            class="form-input w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-border bg-white dark:bg-dark-surface focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <p class="error-msg mt-1.5 text-sm text-red-500 hidden" id="resetPasswordError"></p>
+                    </div>
+
+                    <!-- Confirm New Password -->
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            <i class="fas fa-lock mr-2 text-blue-500"></i>确认新密码
+                        </label>
+                        <input type="password" id="resetConfirmPassword" placeholder="请再次输入新密码" required
+                            class="form-input w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-dark-border bg-white dark:bg-dark-surface focus:border-blue-500 focus:ring-2 focus:ring-blue-500 outline-none">
+                        <p class="error-msg mt-1.5 text-sm text-red-500 hidden" id="resetConfirmPasswordError"></p>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="resetSubmitBtn"
+                        class="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white rounded-lg font-medium transition-all shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                        <i class="fas fa-key"></i>
+                        <span>重置密码</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Footer -->
+            <p class="text-center text-sm text-gray-500 dark:text-gray-500 mt-6">
+                使用即表示同意我们的
+                <a href="javascript:void(0)" onclick="showTermsModal()" class="text-blue-600 dark:text-blue-400 hover:underline">服务条款</a>
+                和
+                <a href="javascript:void(0)" onclick="showPrivacyModal()" class="text-blue-600 dark:text-blue-400 hover:underline">隐私政策</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- Terms Modal -->
+    <div id="termsModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closeTermsModal()"></div>
+        <div class="absolute inset-4 md:inset-10 lg:inset-20 bg-white dark:bg-dark-surface rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-dark-border">
+                <h2 class="text-xl font-bold">用户服务条款</h2>
+                <button onclick="closeTermsModal()" class="w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center transition-colors">
+                    <i class="fas fa-times text-gray-500"></i>
+                </button>
+            </div>
+            <!-- Modal Content -->
+            <div class="flex-1 overflow-y-auto p-6 space-y-6">
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">一、协议适用与使用确认</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        本条款适用于所有访问、浏览、登录或以其他方式使用本平台服务的用户。用户在使用本平台服务前，应当仔细阅读本条款全部内容。用户使用本平台服务的行为，即视为已充分阅读、理解并自愿接受本条款全部约束，自愿承担使用平台服务所产生的全部风险。若用户不同意本条款任何内容，应立即停止访问并退出本平台。继续使用即视为对本条款无异议。
+                    </p>
+                </section>
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">二、平台服务性质</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        本平台仅为中立的信息聚合、展示与分享载体，不生产、不编辑、不审核、不篡改任何第三方发布的内容。平台不提供投资咨询、理财指导、交易撮合、资金托管等金融类服务，不参与任何形式的交易行为。平台展示内容均来源于公开信息、第三方机构、入驻商户或信息发布方自主上传，不代表平台立场或观点。
+                    </p>
+                </section>
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">三、信息真实性与责任声明</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        本平台对所有第三方内容的真实性、准确性、完整性、合法性、时效性、安全性不作任何明示或默示的保证。平台无法逐一核实每条信息的来源与真伪，用户在浏览、参考、使用任何信息时，应自行审慎判断、独立核实。平台内任何内容均不构成投资建议、理财建议、交易建议、买入/卖出指导或任何形式的要约、要约邀请。
+                    </p>
+                </section>
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">四、投资风险提示</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        市场有风险，投资需谨慎。任何投资行为均存在亏损可能，用户应根据自身财务状况与风险承受能力自主决策。平台内出现的"高收益""保本""稳赚""内部消息""导师带单"等表述均来自第三方，与本平台无关。用户因轻信平台信息、盲目投资、跟风操作、决策失误等导致的任何亏损、经济损失或法律纠纷，均由用户自行承担，与本平台无任何关联。
+                    </p>
+                </section>
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">五、防诈骗特别声明</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        本平台郑重提醒：任何以"客服""管理员""导师""工作人员"等名义，通过私信、微信群、QQ群、电话等方式索要验证码、银行卡信息、支付密码，或要求转账、充值、缴纳保证金、加入会员等行为，均属于诈骗。此类行为均为第三方个人行为，与本平台无任何关联，平台不认可、不授权、不承担任何相关责任。用户因私下沟通、私下转账、泄露账户信息、扫码付款等导致被骗、财产损失，由用户自行承担全部后果。
+                    </p>
+                </section>
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">六、用户义务与规范</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        用户在使用平台服务时，应遵守国家法律法规、公序良俗及本条款约定，不得发布违法、违规、侵权、虚假、误导性信息。用户不得冒充平台官方或工作人员进行诈骗、诱导转账、造谣诽谤等行为，否则一切法律责任由用户自行承担。用户不得利用平台从事传销、刷单、洗钱、虚假推广等任何违法犯罪活动。本平台禁止未成年人使用服务，如使用视为已获得监护人同意，相关责任由监护人承担。
+                    </p>
+                </section>
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">七、免责条款</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        本平台作为信息存储空间服务提供者，依法不承担对第三方发布信息的事先主动审查义务。对第三方发布的违法、侵权、虚假内容，平台有权在收到有效通知后依法采取删除、屏蔽等处理措施，不承担连带责任。因网络故障、系统维护、设备故障、黑客攻击、第三方服务中断等不可归责于平台的原因导致服务异常，平台不承担赔偿责任。用户因自身操作不当、账号保管不善、密码泄露、轻信他人、决策失误等产生的一切损失，均由用户自行承担。在法律允许的最大范围内，平台免除一切担保责任、违约责任、侵权责任及补充赔偿责任。
+                    </p>
+                </section>
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">八、侵权及违法信息处理</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        用户如发现平台内存在侵权、违法、虚假或诈骗信息，可通过平台公示方式反馈。平台将依法依规处理，但不承担事前审核及事后连带赔偿责任。
+                    </p>
+                </section>
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">九、条款修改与服务变更</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        本平台有权随时修改、更新本条款，更新后的条款一经公布即自动生效。用户继续使用平台服务，即视为接受修改后的条款内容。平台有权在不提前通知的情况下，暂停、中断或终止部分或全部服务，且无需承担补偿或赔偿责任。
+                    </p>
+                </section>
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">十、其他</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        本条款未涉及事宜，均按照国家现行法律法规执行。如本条款中某一条款被依法认定无效，不影响其他条款的法律效力。用户与第三方或其他用户之间产生的任何纠纷，均由各方自行解决，与本平台无关。
+                    </p>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Privacy Modal -->
+    <div id="privacyModal" class="fixed inset-0 z-50 hidden">
+        <div class="absolute inset-0 bg-black/50 backdrop-blur-sm" onclick="closePrivacyModal()"></div>
+        <div class="absolute inset-4 md:inset-10 lg:inset-20 bg-white dark:bg-dark-surface rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-dark-border">
+                <h2 class="text-xl font-bold">隐私政策</h2>
+                <button onclick="closePrivacyModal()" class="w-8 h-8 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center justify-center transition-colors">
+                    <i class="fas fa-times text-gray-500"></i>
+                </button>
+            </div>
+            <!-- Modal Content -->
+            <div class="flex-1 overflow-y-auto p-6 space-y-6">
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">一、信息收集</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        为保障平台基础功能正常运行，本平台可能自动收集用户设备信息、IP地址、操作系统、浏览记录、访问日志、Cookies等匿名化数据。若用户主动注册、留言或提交内容，平台可能收集用户自行提供的账号、昵称、联系方式等信息。平台不会主动收集与服务无关的敏感隐私信息，包括银行卡密码、支付密码、生物特征、详细住址等。
+                    </p>
+                </section>
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">二、信息使用</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        平台收集的信息仅用于服务运行、安全验证、风险识别、功能优化及异常行为监测，不用于非法目的。不会利用用户信息进行商业推销、骚扰，或未经允许向无关第三方泄露。
+                    </p>
+                </section>
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">三、信息保护</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        平台将采取合理的技术措施保护用户信息安全，但不保证绝对安全。因黑客攻击、网络漏洞、第三方服务故障、不可抗力或用户自身保管不当导致信息泄露、被盗、滥用的，平台不承担法律责任。用户应妥善保管自身账号、密码及设备安全，因自身原因造成的损失由用户自行承担。
+                    </p>
+                </section>
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">四、信息披露</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        平台不会非法出售、出租、转让用户个人信息。仅在国家法律法规要求、有权机关强制要求、为维护公共安全或平台合法权益时，才会依法披露相关信息。
+                    </p>
+                </section>
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">五、第三方服务与SDK</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        本平台可能包含第三方网站、链接、SDK或服务跳转入口。第三方平台拥有独立的隐私政策，平台对其信息收集、使用行为不承担任何责任。
+                    </p>
+                </section>
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">六、政策更新</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        本隐私政策可根据实际情况不定期更新，更新后内容在平台公示后立即生效。用户继续使用平台服务，即视为接受更新后的隐私政策。
+                    </p>
+                </section>
+                <section>
+                    <h3 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">七、附则</h3>
+                    <p class="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+                        本政策是用户服务条款不可分割的一部分，与其具有同等法律效力。用户使用平台服务，即视为已阅读并同意本隐私政策全部内容。
+                    </p>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div id="toastContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
+
+    <script src="config.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Theme management
+        function setupTheme() {
+            const isDark = localStorage.getItem('theme') === 'dark' ||
+                          (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            document.documentElement.classList.toggle('dark', isDark);
+        }
+
+        // Toast notification
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+
+            const bgColor = type === 'success' ? 'bg-green-500' : (type === 'info' ? 'bg-blue-500' : 'bg-red-500');
+            const icon = type === 'success' ? 'fa-check-circle' : (type === 'info' ? 'fa-info-circle' : 'fa-exclamation-circle');
+
+            toast.className = `${bgColor} text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-3 toast-enter`;
+            toast.innerHTML = `
+                <i class="fas ${icon}"></i>
+                <span class="font-medium">${message}</span>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('toast-enter');
+                toast.classList.add('toast-exit');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Modal functions
+        function showTermsModal() {
+            const modal = document.getElementById('termsModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeTermsModal() {
+            const modal = document.getElementById('termsModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        function showPrivacyModal() {
+            const modal = document.getElementById('privacyModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closePrivacyModal() {
+            const modal = document.getElementById('privacyModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Close modals with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeTermsModal();
+                closePrivacyModal();
+            }
+        });
+
+        // Initialize
+        setupTheme();
+
+        // Tab switching
+        const tabBtns = document.querySelectorAll('.tab-btn');
+        const tabContents = {
+            login: document.getElementById('loginForm'),
+            register: document.getElementById('registerForm'),
+            reset: document.getElementById('resetForm')
+        };
+
+        tabBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const tab = this.dataset.tab;
+
+                // Update tab buttons
+                tabBtns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+
+                // Show/hide forms
+                Object.keys(tabContents).forEach(key => {
+                    if (key === tab) {
+                        tabContents[key].classList.remove('hidden');
+                    } else {
+                        tabContents[key].classList.add('hidden');
+                    }
+                });
+
+                // Load captcha for register or reset tabs
+                if (tab === 'register' && typeof loadRegisterCaptcha === 'function') {
+                    loadRegisterCaptcha();
+                } else if (tab === 'reset' && typeof loadResetCaptcha === 'function') {
+                    loadResetCaptcha();
+                }
+            });
+        });
+
+        // Helper functions
+        function showError(elementId, message) {
+            const errorEl = document.getElementById(elementId);
+            errorEl.textContent = message;
+            errorEl.classList.remove('hidden');
+        }
+
+        function showSuccess(elementId, message) {
+            const successEl = document.getElementById(elementId);
+            successEl.textContent = message;
+            successEl.classList.remove('hidden');
+        }
+
+        function clearErrors() {
+            document.querySelectorAll('.error-msg, .success-msg').forEach(el => {
+                el.classList.add('hidden');
+                el.textContent = '';
+            });
+        }
+
+        function isValidEmail(email) {
+            const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailPattern.test(email);
+        }
+
+        // Captcha loading functions (defined outside DOMContentLoaded for tab access)
+        let currentRegisterCaptchaKey = null;
+        let currentResetCaptchaKey = null;
+
+        async function loadRegisterCaptcha() {
+            try {
+                const response = await fetch(`${API_BASE}/auth/captcha`);
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('registerCaptchaImg').src = data.image;
+                    currentRegisterCaptchaKey = data.captcha_key;
+                    document.getElementById('registerCaptcha').value = '';
+                    showError('registerCaptchaError', '');
+                    document.getElementById('registerCaptchaError').classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('加载验证码失败:', error);
+            }
+        }
+
+        async function loadResetCaptcha() {
+            try {
+                const response = await fetch(`${API_BASE}/auth/captcha`);
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('resetCaptchaImg').src = data.image;
+                    currentResetCaptchaKey = data.captcha_key;
+                    document.getElementById('resetCaptcha').value = '';
+                    showError('resetCaptchaError', '');
+                    document.getElementById('resetCaptchaError').classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('加载验证码失败:', error);
+            }
+        }
+
+        // Login Form
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check remembered email
+            const savedEmail = localStorage.getItem('rememberedEmail');
+            if (savedEmail) {
+                document.getElementById('loginEmail').value = savedEmail;
+                document.getElementById('rememberMe').checked = true;
+            }
+
+            // Forgot password button - switch to reset tab
+            document.getElementById('forgotPasswordBtn').addEventListener('click', function() {
+                document.querySelector('[data-tab="reset"]').click();
+            });
+
+            // Login form submit
+            document.querySelector('#loginForm form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                clearErrors();
+
+                const email = document.getElementById('loginEmail').value.trim().toLowerCase();
+                const password = document.getElementById('loginPassword').value;
+                const agreeTerms = document.getElementById('loginAgreeTerms').checked;
+                const submitBtn = document.getElementById('loginSubmitBtn');
+
+                if (!email || !password) {
+                    showError('loginError', '请输入邮箱和密码');
+                    return;
+                }
+
+                // Check terms agreement
+                if (!agreeTerms) {
+                    showError('loginAgreeError', '请阅读并同意服务条款和隐私政策');
+
+                    // Flash animation
+                    submitBtn.classList.add('animate-pulse', 'bg-red-500');
+                    setTimeout(() => {
+                        submitBtn.classList.remove('animate-pulse', 'bg-red-500');
+                    }, 500);
+
+                    return;
+                }
+
+                try {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>登录中...</span>';
+
+                    const result = await login(email, password);
+
+                    if (result.success) {
+                        localStorage.setItem('token', result.token);
+                        localStorage.setItem('refresh_token', result.refresh_token);
+                        localStorage.setItem('user', JSON.stringify(result.user));
+
+                        if (document.getElementById('rememberMe').checked) {
+                            localStorage.setItem('rememberedEmail', email);
+                        } else {
+                            localStorage.removeItem('rememberedEmail');
+                        }
+
+                        showToast('登录成功！', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'index_user.html';
+                        }, 500);
+                    } else {
+                        showError('loginError', result.message || '登录失败');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span>登录</span>';
+                    }
+                } catch (error) {
+                    showError('loginError', '网络错误，请稍后重试');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span>登录</span>';
+                }
+            });
+
+            // Register form
+            let registerCountdown = 0;
+            let registerCountdownInterval;
+
+            document.getElementById('refreshRegisterCaptchaBtn').addEventListener('click', loadRegisterCaptcha);
+            document.getElementById('registerCaptchaImg').addEventListener('click', loadRegisterCaptcha);
+
+            document.getElementById('sendRegisterCodeBtn').addEventListener('click', async function() {
+                const email = document.getElementById('registerEmail').value.trim();
+                const captcha = document.getElementById('registerCaptcha').value.trim();
+
+                if (!email) {
+                    showError('registerEmailError', '请输入邮箱');
+                    return;
+                }
+
+                if (!isValidEmail(email)) {
+                    showError('registerEmailError', '邮箱格式不正确');
+                    return;
+                }
+
+                if (!captcha) {
+                    showError('registerCaptchaError', '请输入图形验证码');
+                    return;
+                }
+
+                try {
+                    const btn = this;
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 发送中...';
+
+                    const result = await sendVerificationCode(email, 'register', captcha, currentRegisterCaptchaKey);
+
+                    if (result.success) {
+                        showSuccess('registerCodeSuccess', '验证码已发送到您的邮箱');
+                        startRegisterCountdown();
+
+                        document.getElementById('registerCaptcha').value = '';
+                        document.getElementById('registerCaptchaError').classList.add('hidden');
+                        document.getElementById('registerCaptchaError').textContent = '';
+                        loadRegisterCaptcha();
+                    } else {
+                        // 检查是否是邮箱已存在的情况
+                        if (result.exists) {
+                            showToast('该邮箱已注册，正在切换到登录...', 'info');
+                            // 切换到登录tab并填充邮箱
+                            setTimeout(() => {
+                                document.querySelector('[data-tab="login"]').click();
+                                document.getElementById('loginEmail').value = email;
+                                document.getElementById('loginPassword').focus();
+                            }, 1500);
+                        } else {
+                            showError(result.field === 'captcha' ? 'registerCaptchaError' : 'registerCodeError',
+                                      result.message || '验证码发送失败');
+                            btn.disabled = false;
+                            btn.innerHTML = '获取验证码';
+
+                            if (result.field === 'captcha') {
+                                loadRegisterCaptcha();
+                            }
+                        }
+                    }
+                } catch (error) {
+                    showError('registerCodeError', '网络错误，请稍后重试');
+                    this.disabled = false;
+                    this.innerHTML = '获取验证码';
+                }
+            });
+
+            function startRegisterCountdown() {
+                registerCountdown = 60;
+                const btn = document.getElementById('sendRegisterCodeBtn');
+                btn.disabled = true;
+
+                registerCountdownInterval = setInterval(() => {
+                    registerCountdown--;
+                    btn.innerHTML = `${registerCountdown}秒后重试`;
+
+                    if (registerCountdown <= 0) {
+                        clearInterval(registerCountdownInterval);
+                        btn.disabled = false;
+                        btn.innerHTML = '获取验证码';
+                    }
+                }, 1000);
+            }
+
+            document.querySelector('#registerForm form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                clearErrors();
+
+                const email = document.getElementById('registerEmail').value.trim().toLowerCase();
+                const code = document.getElementById('registerCode').value.trim();
+                const nickname = document.getElementById('registerNickname').value.trim();
+                const password = document.getElementById('registerPassword').value;
+                const confirmPassword = document.getElementById('registerConfirmPassword').value;
+                const submitBtn = document.getElementById('registerSubmitBtn');
+
+                let hasError = false;
+
+                if (!email) {
+                    showError('registerEmailError', '请输入邮箱');
+                    hasError = true;
+                } else if (!isValidEmail(email)) {
+                    showError('registerEmailError', '邮箱格式不正确');
+                    hasError = true;
+                }
+
+                if (!code) {
+                    showError('registerCodeError', '请输入验证码');
+                    hasError = true;
+                }
+
+                if (!nickname) {
+                    showError('registerNicknameError', '请输入昵称');
+                    hasError = true;
+                }
+
+                if (!password) {
+                    showError('registerPasswordError', '请输入密码');
+                    hasError = true;
+                } else if (password.length < 6) {
+                    showError('registerPasswordError', '密码至少6位');
+                    hasError = true;
+                }
+
+                if (password !== confirmPassword) {
+                    showError('registerConfirmPasswordError', '两次密码不一致');
+                    hasError = true;
+                }
+
+                if (hasError) return;
+
+                try {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>注册中...</span>';
+
+                    const result = await register(email, code, nickname, password);
+
+                    if (result.success) {
+                        localStorage.setItem('token', result.token);
+                        localStorage.setItem('refresh_token', result.refresh_token);
+                        localStorage.setItem('user', JSON.stringify(result.user));
+                        showToast('注册成功！', 'success');
+                        setTimeout(() => {
+                            window.location.href = 'index_user.html';
+                        }, 1000);
+                    } else {
+                        showError('registerEmailError', result.message || '注册失败');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> <span>注册</span>';
+                    }
+                } catch (error) {
+                    showError('registerEmailError', '网络错误，请稍后重试');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> <span>注册</span>';
+                }
+            });
+
+            // Reset password form
+            let resetCountdown = 0;
+            let resetCountdownInterval;
+
+            document.getElementById('refreshResetCaptchaBtn').addEventListener('click', loadResetCaptcha);
+            document.getElementById('resetCaptchaImg').addEventListener('click', loadResetCaptcha);
+
+            document.getElementById('sendResetCodeBtn').addEventListener('click', async function() {
+                const email = document.getElementById('resetEmail').value.trim();
+                const captcha = document.getElementById('resetCaptcha').value.trim();
+
+                if (!email) {
+                    showError('resetEmailError', '请输入邮箱');
+                    return;
+                }
+
+                if (!isValidEmail(email)) {
+                    showError('resetEmailError', '邮箱格式不正确');
+                    return;
+                }
+
+                if (!captcha) {
+                    showError('resetCaptchaError', '请输入图形验证码');
+                    return;
+                }
+
+                try {
+                    const btn = this;
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 发送中...';
+
+                    const result = await sendVerificationCode(email, 'reset_password', captcha, currentResetCaptchaKey);
+
+                    if (result.success) {
+                        showSuccess('resetCodeSuccess', '验证码已发送到您的邮箱');
+                        startResetCountdown();
+
+                        document.getElementById('resetCaptcha').value = '';
+                        document.getElementById('resetCaptchaError').classList.add('hidden');
+                        document.getElementById('resetCaptchaError').textContent = '';
+                        loadResetCaptcha();
+                    } else {
+                        showError(result.field === 'captcha' ? 'resetCaptchaError' : 'resetCodeError',
+                                  result.message || '验证码发送失败');
+                        btn.disabled = false;
+                        btn.innerHTML = '获取验证码';
+
+                        if (result.field === 'captcha') {
+                            loadResetCaptcha();
+                        }
+                    }
+                } catch (error) {
+                    showError('resetCodeError', '网络错误，请稍后重试');
+                    this.disabled = false;
+                    this.innerHTML = '获取验证码';
+                }
+            });
+
+            function startResetCountdown() {
+                resetCountdown = 60;
+                const btn = document.getElementById('sendResetCodeBtn');
+                btn.disabled = true;
+
+                resetCountdownInterval = setInterval(() => {
+                    resetCountdown--;
+                    btn.innerHTML = `${resetCountdown}秒后重试`;
+
+                    if (resetCountdown <= 0) {
+                        clearInterval(resetCountdownInterval);
+                        btn.disabled = false;
+                        btn.innerHTML = '获取验证码';
+                    }
+                }, 1000);
+            }
+
+            document.querySelector('#resetForm form').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                clearErrors();
+
+                const email = document.getElementById('resetEmail').value.trim().toLowerCase();
+                const code = document.getElementById('resetCode').value.trim();
+                const password = document.getElementById('resetPassword').value;
+                const confirmPassword = document.getElementById('resetConfirmPassword').value;
+                const submitBtn = document.getElementById('resetSubmitBtn');
+
+                let hasError = false;
+
+                if (!email) {
+                    showError('resetEmailError', '请输入邮箱');
+                    hasError = true;
+                } else if (!isValidEmail(email)) {
+                    showError('resetEmailError', '邮箱格式不正确');
+                    hasError = true;
+                }
+
+                if (!code) {
+                    showError('resetCodeError', '请输入验证码');
+                    hasError = true;
+                }
+
+                if (!password) {
+                    showError('resetPasswordError', '请输入新密码');
+                    hasError = true;
+                } else if (password.length < 6) {
+                    showError('resetPasswordError', '密码至少6位');
+                    hasError = true;
+                }
+
+                if (password !== confirmPassword) {
+                    showError('resetConfirmPasswordError', '两次密码不一致');
+                    hasError = true;
+                }
+
+                if (hasError) return;
+
+                try {
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>重置中...</span>';
+
+                    const result = await resetPassword(email, code, password);
+
+                    if (result.success) {
+                        showToast('密码重置成功！请使用新密码登录', 'success');
+                        setTimeout(() => {
+                            document.querySelector('[data-tab="login"]').click();
+                        }, 1500);
+                    } else {
+                        showError('resetEmailError', result.message || '重置失败');
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-key"></i> <span>重置密码</span>';
+                    }
+                } catch (error) {
+                    showError('resetEmailError', '网络错误，请稍后重试');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-key"></i> <span>重置密码</span>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
