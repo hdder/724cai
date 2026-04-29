@@ -47,12 +47,10 @@ async function loadChannels() {
 
 // 连接 WebSocket
 function connectWebSocket() {
-    // 自动获取当前页面的主机地址
-    const host = window.location.hostname;
-    const socketUrl = `http://${host}:9080`;
+    const wsUrl = window.getWebSocketUrl ? window.getWebSocketUrl() : `ws://${window.location.hostname}:9080`;
 
-    console.log('连接到 Socket.IO 服务器:', socketUrl);
-    socket = io(socketUrl, {
+    console.log('连接到 Socket.IO 服务器:', wsUrl);
+    socket = io(wsUrl, {
         transports: ['websocket', 'polling']
     });
 

@@ -632,10 +632,9 @@ function toggleTheme() {
 
 // WebSocket 连接
 function connectWebSocket() {
-    const host = window.location.hostname;
-    const socketUrl = `http://${host}:9080`;
+    const wsUrl = window.getWebSocketUrl ? window.getWebSocketUrl() : `ws://${window.location.hostname}:9080`;
 
-    socket = io(socketUrl, {
+    socket = io(wsUrl, {
         transports: ['websocket', 'polling']
     });
 
